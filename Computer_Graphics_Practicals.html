@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computer Graphics Practical File</title>
+<style>
+  :root { color-scheme: light; }
+  body {
+    margin: 0; padding: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5; color: #222; background: #f5f6f8;
+  }
+  main { max-width: 1050px; margin: 0 auto; }
+  header, nav, section {
+    background: #fff; border: 1px solid #ddd; border-radius: 8px;
+    padding: 20px; margin-bottom: 18px;
+  }
+  h1 { margin: 0 0 6px; font-size: 1.8rem; }
+  h2 { margin-top: 0; font-size: 1.25rem; }
+  nav ul { margin: 10px 0 0; padding-left: 22px; columns: 2; }
+  a { color: #1457a6; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  pre {
+    margin: 0; white-space: pre-wrap; overflow-wrap: anywhere;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 14px; line-height: 1.45;
+  }
+  .note { color: #555; font-size: .95rem; }
+  @media (max-width: 650px) {
+    body { padding: 12px; }
+    nav ul { columns: 1; }
+    pre { font-size: 12px; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    header, nav, section { border: 0; border-radius: 0; padding: 10px 0; }
+    nav { display: none; }
+    section { break-inside: auto; }
+    pre { font-size: 9pt; }
+  }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Computer Graphics Practical File</h1>
+  <div class="note">Offline webpage • No internet or installation required</div>
+</header>
+<nav>
+  <h2>Contents</h2>
+  <ul>
+    <li><a href="#section-1">Introduction</a></li><li><a href="#section-2">PRACTICAL I – DRAWING DIFFERENT STRUCTURES USING OUTPUT PRIMITIVES</a></li><li><a href="#section-3">PRACTICAL II – SHOW A MOVING 2D CARTOON IN RAINY SEASON</a></li><li><a href="#section-4">PRACTICAL III – SHOW A MOVING 2D CAR ACROSS THE SCREEN</a></li><li><a href="#section-5">PRACTICAL IV – IMPLEMENT DDA LINE GENERATING ALGORITHM</a></li><li><a href="#section-6">PRACTICAL V – IMPLEMENT BRESENHAM’S LINE GENERATING ALGORITHM</a></li><li><a href="#section-7">PRACTICAL VI – IMPLEMENT MID-POINT CIRCLE GENERATING ALGORITHM</a></li><li><a href="#section-8">PRACTICAL VII – IMPLEMENT BOUNDARY FILL ALGORITHM</a></li><li><a href="#section-9">PRACTICAL VIII – IMPLEMENT FLOOD FILL ALGORITHM</a></li><li><a href="#section-10">PRACTICAL IX – LINE CLIPPING USING COHEN-SUTHERLAND ALGORITHM</a></li><li><a href="#section-11">PRACTICAL X – TRANSLATING A LINE</a></li><li><a href="#section-12">PRACTICAL XI – TRANSLATING A LINE CONSECUTIVELY THREE TIMES</a></li>
+  </ul>
+</nav>
+<section id="section-1"><h2>Introduction</h2><pre>COMPUTER GRAPHICS PRACTICAL FILE
+Transcription of PDF pages 1–22 (including contents and practicals)
+Note: The source is a scanned PDF. Obvious OCR errors and damaged punctuation have been normalized. The algorithms, values and Turbo C++ graphics style are retained. Where a scanned line was unclear, the reconstruction follows the surrounding code.
+
+============================================================</pre></section><section id="section-2"><h2>PRACTICAL I – DRAWING DIFFERENT STRUCTURES USING OUTPUT PRIMITIVES</h2><pre>PRACTICAL I – DRAWING DIFFERENT STRUCTURES USING OUTPUT PRIMITIVES
+============================================================
+
+1.1 TO DRAW PIXELS
+
+#include &lt;conio.h&gt;
+#include &lt;graphics.h&gt;
+
+void main()
+{
+    int gd = DETECT, gm, i, j;
+
+    // Initialize graphics library
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    // Set background color to white
+    setbkcolor(WHITE);
+
+    // Draw 4 pixels on the screen
+    putpixel(25, 25, RED);
+    putpixel(30, 25, RED);
+    putpixel(35, 25, RED);
+    putpixel(40, 25, RED);
+
+    getch();
+    closegraph();
+}
+
+OUTPUT:
+Four red pixels are displayed on a white screen.
+Figure 1: 4 Pixels on the screen.
+
+
+1.2 TO DRAW A LINE
+
+#include &lt;conio.h&gt;
+#include &lt;graphics.h&gt;
+
+void main()
+{
+    int gd = DETECT, gm, i, j;
+
+    // Initialize graphics library
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    // Set background color to white
+    setbkcolor(WHITE);
+
+    // Draw a line from (25,25) to (150,150)
+    for (int x = 0; x &lt; 125; x++)
+    {
+        putpixel(25 + x, 25 + x, RED);
+    }
+
+    getch();
+    closegraph();
+}
+
+OUTPUT:
+A red diagonal line is displayed.
+Figure 2: Line drawn using basic primitives.
+
+
+1.3 TO DRAW A RECTANGLE
+
+#include &lt;conio.h&gt;
+#include &lt;graphics.h&gt;
+
+void main()
+{
+    int gd = DETECT, gm, i, j;
+
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+    setbkcolor(WHITE);
+
+    // Draw top edge
+    for (int topx = 25; topx &lt;= 150; topx++)
+        putpixel(topx, 25, RED);
+
+    // Draw bottom edge
+    for (int bottomx = 25; bottomx &lt;= 150; bottomx++)
+        putpixel(bottomx, 225, RED);
+
+    // Draw left edge
+    for (int lefty = 25; lefty &lt;= 225; lefty++)
+        putpixel(25, lefty, RED);
+
+    // Draw right edge
+    for (int righty = 25; righty &lt;= 225; righty++)
+        putpixel(150, righty, RED);
+
+    getch();
+    closegraph();
+}
+
+OUTPUT:
+A red rectangle is displayed on a white screen.
+Figure 3: Rectangle drawn using basic primitives.
+
+
+============================================================</pre></section><section id="section-3"><h2>PRACTICAL II – SHOW A MOVING 2D CARTOON IN RAINY SEASON</h2><pre>PRACTICAL II – SHOW A MOVING 2D CARTOON IN RAINY SEASON
+============================================================
+
+#include &lt;stdlib.h&gt;   // Contains rand() function
+#include &lt;conio.h&gt;    // Contains kbhit() function
+#include &lt;dos.h&gt;      // Contains delay() function
+#include &lt;graphics.h&gt;
+
+// Get height and width of output window
+#define screenwidth getmaxx()
+#define screenheight getmaxy()
+
+// Set ground at 75% of window height
+#define groundY (screenheight * 0.75)
+
+void drawMan(int x, int legs_displacement)
+{
+    // Head
+    circle(x, groundY - 90, 10);
+
+    // Middle line/body
+    line(x, groundY - 80, x, groundY - 30);
+
+    // Right hand and left hand
+    line(x, groundY - 70, x + 15, groundY - 60);
+    line(x, groundY - 70, x - 15, groundY - 60);
+
+    // Right leg and left leg
+    line(x, groundY - 30, x + legs_displacement, groundY);
+    line(x, groundY - 30, x - legs_displacement, groundY);
+}
+
+void drawUmbrella(int x)
+{
+    // Semi-circular top
+    pieslice(x + 15, groundY - 120, 0, 180, 40);
+
+    // Handle
+    line(x + 15, groundY - 120, x + 15, groundY - 60);
+}
+
+void drawRain(int x)
+{
+    int i, rx, ry;
+
+    // Draw at most 1000 rain droplets
+    for (i = 0; i &lt; 1000; i++)
+    {
+        rx = rand() % screenwidth;
+        ry = rand() % screenheight;
+
+        // Rain must remain above the ground and outside
+        // the protected area beneath the umbrella.
+        if (ry + 5 &lt; groundY)
+        {
+            if (ry &lt; groundY - 120 ||
+                (ry &gt; groundY - 120 &amp;&amp; (rx &lt; x - 20 || rx &gt; x + 60)))
+            {
+                line(rx, ry, rx + 0.5, ry + 5);
+            }
+        }
+    }
+}
+
+void main()
+{
+    int gd = DETECT, gm, x = 0, legs_displacement = 0;
+
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    // Set background color white and foreground color blue
+    setbkcolor(WHITE);
+    setcolor(BLUE);
+
+    // Repeat until a key is pressed
+    while (!kbhit())
+    {
+        // Draw the ground
+        line(0, groundY, screenwidth, groundY);
+
+        // Draw rain
+        drawRain(x);
+
+        // Draw man with moving legs
+        legs_displacement = (legs_displacement + 2) % 20;
+        drawMan(x, legs_displacement);
+
+        // Draw umbrella
+        drawUmbrella(x);
+
+        // Wait for 75 milliseconds
+        delay(75);
+
+        // Clear screen
+        cleardevice();
+
+        // Move man and umbrella forward
+        x = (x + 2) % screenwidth;
+    }
+
+    closegraph();
+}
+
+OUTPUT:
+A 2D cartoon/person carrying an umbrella moves across the screen while rain falls.
+Figure 4: A frame of the output – Moving 2D Cartoon in Rain.
+
+
+============================================================</pre></section><section id="section-4"><h2>PRACTICAL III – SHOW A MOVING 2D CAR ACROSS THE SCREEN</h2><pre>PRACTICAL III – SHOW A MOVING 2D CAR ACROSS THE SCREEN
+============================================================
+
+#include &lt;conio.h&gt;
+#include &lt;graphics.h&gt;
+#include &lt;dos.h&gt;
+
+#define screenheight getmaxy()
+#define screenwidth getmaxx()
+
+void drawCar(int displacement)
+{
+    line(displacement, 300, 210 + displacement, 300);       // Line AB
+    line(50 + displacement, 300, 75 + displacement, 270);   // Line CD
+    line(75 + displacement, 270, 150 + displacement, 270); // Line DE
+    line(150 + displacement, 270, 165 + displacement, 300);// Line EF
+    line(displacement, 300, 0 + displacement, 330);         // Line AG
+    line(210 + displacement, 300, 210 + displacement, 330);// Line BH
+
+    circle(65 + displacement, 330, 15); // Wheel I, radius 15
+    circle(65 + displacement, 330, 2);  // Wheel I, radius 2
+    circle(145 + displacement, 330, 15);// Wheel J, radius 15
+    circle(145 + displacement, 330, 2); // Wheel J, radius 2
+
+    line(0 + displacement, 330, 50 + displacement, 330);   // Line GK
+    line(80 + displacement, 330, 130 + displacement, 330);// Line LM
+    line(210 + displacement, 330, 160 + displacement, 330);// Line NH
+}
+
+void main()
+{
+    int gd = DETECT, gm, i = 0;
+
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    setbkcolor(WHITE);
+    setcolor(BLUE);
+
+    while (!kbhit())
+    {
+        drawCar(i);
+        delay(50);
+        cleardevice();
+
+        i = (i + 5) % screenwidth;
+    }
+
+    getch();
+    closegraph();
+}
+
+OUTPUT:
+A 2D car moves horizontally across the screen.
+Figure 5: Coordinates of the car to draw.
+Figure 6: A frame of the output – Moving 2D Car.
+
+
+============================================================</pre></section><section id="section-5"><h2>PRACTICAL IV – IMPLEMENT DDA LINE GENERATING ALGORITHM</h2><pre>PRACTICAL IV – IMPLEMENT DDA LINE GENERATING ALGORITHM
+============================================================
+
+#include &lt;graphics.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;iostream.h&gt;
+
+void dda(int xi, int yi, int xf, int yf)
+{
+    int dx = xf - xi;
+    int dy = yf - yi;
+    float m = (float)dy / dx;
+
+    float x = xi, y = yi;
+    putpixel(x, y, RED);
+
+    if (m &lt;= 1)
+    {
+        while (x &lt; xf)
+        {
+            x++;
+            y = y + m;
+            putpixel(x, y, RED);
+        }
+    }
+    else
+    {
+        while (y &lt;= yf)
+        {
+            x = x + (1 / m);
+            y++;
+            putpixel(x, y, RED);
+        }
+    }
+}
+
+void main()
+{
+    int gd = DETECT, gm, xi, xf, yi, yf;
+
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    cout &lt;&lt; &quot;Enter value of xi, yi: &quot;;
+    cin &gt;&gt; xi &gt;&gt; yi;
+
+    cout &lt;&lt; &quot;\nEnter value of xf, yf: &quot;;
+    cin &gt;&gt; xf &gt;&gt; yf;
+
+    setbkcolor(WHITE);
+    dda(xi, yi, xf, yf);
+
+    getch();
+    closegraph();
+}
+
+OUTPUT / SAMPLE INPUT:
+Enter value of xi, yi: 125 125
+Enter value of xf, yf: 225 225
+
+A red diagonal line is displayed.
+Figure 7: A Line generated using DDA Algorithm.
+
+
+============================================================</pre></section><section id="section-6"><h2>PRACTICAL V – IMPLEMENT BRESENHAM’S LINE GENERATING ALGORITHM</h2><pre>PRACTICAL V – IMPLEMENT BRESENHAM’S LINE GENERATING ALGORITHM
+============================================================
+
+#include &lt;graphics.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;iostream.h&gt;
+
+void bresenham(int xi, int yi, int xf, int yf)
+{
+    int dx = xf - xi;
+    int dy = yf - yi;
+    int m = dy / dx;
+
+    int P = 2 * dy - dx;
+    int x = xi, y = yi;
+
+    putpixel(x, y, RED);
+
+    if (m &lt; 1)
+    {
+        while (x &lt;= xf)
+        {
+            if (P &lt; 0)
+            {
+                x++;
+                P = P + 2 * dy;
+            }
+            else
+            {
+                x++;
+                y++;
+                P = P + 2 * (dy - dx);
+            }
+
+            putpixel(x, y, RED);
+        }
+    }
+    else
+    {
+        while (y &lt;= yf)
+        {
+            if (P &lt; 0)
+            {
+                y++;
+                P = P + 2 * dx;
+            }
+            else
+            {
+                y++;
+                x++;
+                P = P + 2 * (dx - dy);
+            }
+
+            putpixel(x, y, RED);
+        }
+    }
+}
+
+void main()
+{
+    int gd = DETECT, gm, xi, xf, yi, yf;
+
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    cout &lt;&lt; &quot;Enter value of xi, yi: &quot;;
+    cin &gt;&gt; xi &gt;&gt; yi;
+
+    cout &lt;&lt; &quot;\nEnter value of xf, yf: &quot;;
+    cin &gt;&gt; xf &gt;&gt; yf;
+
+    setbkcolor(WHITE);
+    bresenham(xi, yi, xf, yf);
+
+    getch();
+    closegraph();
+}
+
+OUTPUT / SAMPLE INPUT:
+Enter value of xi, yi: 125 125
+Enter value of xf, yf: 225 225
+
+A red line is displayed.
+Figure 8: A Line generated using Bresenham’s Algorithm.
+
+
+============================================================</pre></section><section id="section-7"><h2>PRACTICAL VI – IMPLEMENT MID-POINT CIRCLE GENERATING ALGORITHM</h2><pre>PRACTICAL VI – IMPLEMENT MID-POINT CIRCLE GENERATING ALGORITHM
+============================================================
+
+#include &lt;graphics.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;iostream.h&gt;
+
+void plotPixel(int x, int y, int Xcenter, int Ycenter)
+{
+    // Plot the eight symmetric points of the circle
+    putpixel(x + Xcenter, y + Ycenter, RED);
+    putpixel(y + Xcenter, x + Ycenter, RED);
+    putpixel(x + Xcenter, -y + Ycenter, RED);
+    putpixel(-y + Xcenter, x + Ycenter, RED);
+    putpixel(-x + Xcenter, y + Ycenter, RED);
+    putpixel(y + Xcenter, -x + Ycenter, RED);
+    putpixel(-x + Xcenter, -y + Ycenter, RED);
+    putpixel(-y + Xcenter, -x + Ycenter, RED);
+}
+
+void drawcircle(int Xcenter, int Ycenter, int radius)
+{
+    int x = 0, y = radius, P = 1 - radius;
+
+    plotPixel(x, y, Xcenter, Ycenter);
+
+    while (x &lt;= y)
+    {
+        if (P &lt; 0)
+        {
+            x++;
+            plotPixel(x, y, Xcenter, Ycenter);
+            P = P + 2 * x + 1;
+        }
+        else
+        {
+            x++;
+            y--;
+            plotPixel(x, y, Xcenter, Ycenter);
+            P = P + 2 * x + 1 - 2 * y;
+        }
+    }
+}
+
+int main()
+{
+    int gdriver = DETECT, gmode, P, x, y, r;
+
+    initgraph(&amp;gdriver, &amp;gmode, &quot;C://TURBOC3//bgi&quot;);
+
+    cout &lt;&lt; &quot;Enter radius of circle: &quot;;
+    cin &gt;&gt; r;
+
+    cout &lt;&lt; &quot;Enter co-ordinates of center (x and y): &quot;;
+    cin &gt;&gt; x &gt;&gt; y;
+
+    setbkcolor(WHITE);
+    drawcircle(x, y, r);
+
+    getch();
+    closegraph();
+    return 0;
+}
+
+OUTPUT / SAMPLE INPUT:
+Enter radius of circle: 50
+Enter co-ordinates of center (x and y): 150 150
+
+A red circle is displayed with center (150,150) and radius 50.
+Figure 9: A Circle generated using mid-point circle generating algorithm.
+
+
+============================================================</pre></section><section id="section-8"><h2>PRACTICAL VII – IMPLEMENT BOUNDARY FILL ALGORITHM</h2><pre>PRACTICAL VII – IMPLEMENT BOUNDARY FILL ALGORITHM
+============================================================
+
+#include &lt;graphics.h&gt;
+#include &lt;conio.h&gt;
+
+void boundaryFill(int x, int y, int fillColor, int boundaryColor)
+{
+    int c = getpixel(x, y);
+
+    if (c != fillColor &amp;&amp; c != boundaryColor)
+    {
+        putpixel(x, y, fillColor);
+
+        boundaryFill(x + 1, y, fillColor, boundaryColor);
+        boundaryFill(x, y - 1, fillColor, boundaryColor);
+        boundaryFill(x - 1, y, fillColor, boundaryColor);
+        boundaryFill(x, y + 1, fillColor, boundaryColor);
+    }
+}
+
+void main()
+{
+    int gd = DETECT, gm, x, y, fillColor, boundaryColor;
+
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    setbkcolor(WHITE);
+    setcolor(BLUE);
+
+    rectangle(100, 100, 158, 157);
+    boundaryFill(101, 101, CYAN, BLUE);
+
+    getch();
+    closegraph();
+}
+
+OUTPUT:
+A rectangle with a blue boundary is filled with cyan color.
+Figure 10: A rectangle colored using boundary fill algorithm.
+
+
+============================================================</pre></section><section id="section-9"><h2>PRACTICAL VIII – IMPLEMENT FLOOD FILL ALGORITHM</h2><pre>PRACTICAL VIII – IMPLEMENT FLOOD FILL ALGORITHM
+============================================================
+
+#include &lt;graphics.h&gt;
+#include &lt;conio.h&gt;
+
+void floodFill(int x, int y, int fillColor, int oldColor)
+{
+    if (getpixel(x, y) == oldColor)
+    {
+        putpixel(x, y, fillColor);
+
+        floodFill(x + 1, y, fillColor, oldColor);
+        floodFill(x, y - 1, fillColor, oldColor);
+        floodFill(x - 1, y, fillColor, oldColor);
+        floodFill(x, y + 1, fillColor, oldColor);
+    }
+}
+
+void main()
+{
+    int gd = DETECT, gm, x, y, fillColor, oldColor;
+
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    setcolor(BLUE);
+    rectangle(100, 100, 150, 150);
+
+    floodFill(101, 101, CYAN, BLACK);
+
+    getch();
+    closegraph();
+}
+
+OUTPUT:
+A rectangle is filled with cyan color using the flood fill algorithm.
+Figure 11: A rectangle colored using flood fill algorithm.
+
+
+============================================================</pre></section><section id="section-10"><h2>PRACTICAL IX – LINE CLIPPING USING COHEN-SUTHERLAND ALGORITHM</h2><pre>PRACTICAL IX – LINE CLIPPING USING COHEN-SUTHERLAND ALGORITHM
+============================================================
+
+#include &lt;iostream.h&gt;
+#include &lt;graphics.h&gt;
+#include &lt;conio.h&gt;
+
+// Define region codes
+const int INSIDE = 0;  // 0000
+const int LEFT = 1;    // 0001
+const int RIGHT = 2;   // 0010
+const int BOTTOM = 4;  // 0100
+const int TOP = 8;     // 1000
+
+// Clipping rectangle boundaries
+const int x_max = 400;
+const int y_max = 200;
+const int x_min = 100;
+const int y_min = 100;
+
+int computeCode(double x, double y)
+{
+    // Initialize point as inside
+    int code = INSIDE;
+
+    if (x &lt; x_min)
+        code = code | LEFT;
+    else if (x &gt; x_max)
+        code = code | RIGHT;
+
+    if (y &lt; y_min)
+        code = code | BOTTOM;
+    else if (y &gt; y_max)
+        code = code | TOP;
+
+    return code;
+}
+
+void cohenSutherlandClip(int x1, int y1, int x2, int y2)
+{
+    int code1 = computeCode(x1, y1);
+    int code2 = computeCode(x2, y2);
+    int accept = 0;
+
+    while (1)
+    {
+        if ((code1 == 0) &amp;&amp; (code2 == 0))
+        {
+            // Both endpoints are inside
+            accept = 1;
+            break;
+        }
+        else if (code1 &amp; code2)
+        {
+            // Both endpoints are outside in the same region
+            break;
+        }
+        else
+        {
+            // Some part of the line lies inside the rectangle
+            int code_out;
+            int x, y;
+
+            if (code1 != 0)
+                code_out = code1;
+            else
+                code_out = code2;
+
+            // Find intersection point
+            if (code_out &amp; TOP)
+            {
+                x = x1 + (x2 - x1) * (y_max - y1) / (y2 - y1);
+                y = y_max;
+            }
+            else if (code_out &amp; BOTTOM)
+            {
+                x = x1 + (x2 - x1) * (y_min - y1) / (y2 - y1);
+                y = y_min;
+            }
+            else if (code_out &amp; RIGHT)
+            {
+                y = y1 + (y2 - y1) * (x_max - x1) / (x2 - x1);
+                x = x_max;
+            }
+            else if (code_out &amp; LEFT)
+            {
+                y = y1 + (y2 - y1) * (x_min - x1) / (x2 - x1);
+                x = x_min;
+            }
+
+            // Replace the outside point with intersection point
+            if (code_out == code1)
+            {
+                setcolor(RED);
+                line(x1, y1, x, y);
+                x1 = x;
+                y1 = y;
+                code1 = computeCode(x1, y1);
+            }
+            else
+            {
+                setcolor(RED);
+                line(x2, y2, x, y);
+                x2 = x;
+                y2 = y;
+                code2 = computeCode(x2, y2);
+            }
+        }
+    }
+
+    if (accept)
+    {
+        setcolor(GREEN);
+        line(x1, y1, x2, y2);
+    }
+    else
+    {
+        setcolor(RED);
+        line(x1, y1, x2, y2);
+    }
+}
+
+void main()
+{
+    int gd = DETECT, gm;
+
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    setbkcolor(WHITE);
+    setcolor(BLUE);
+
+    rectangle(x_min, y_min, x_max, y_max);
+
+    cohenSutherlandClip(75, 75, 150, 150);
+    cohenSutherlandClip(250, 50, 250, 250);
+    cohenSutherlandClip(425, 110, 350, 190);
+
+    getch();
+    closegraph();
+}
+
+OUTPUT:
+A clipping rectangle is displayed. Green lines indicate accepted lines, and red lines indicate the clipped/rejected portions.
+Figure 12: Green Lines indicate accepted lines, red indicate the clipped lines.
+
+
+============================================================</pre></section><section id="section-11"><h2>PRACTICAL X – TRANSLATING A LINE</h2><pre>PRACTICAL X – TRANSLATING A LINE
+============================================================
+
+#include &lt;graphics.h&gt;
+#include &lt;conio.h&gt;
+
+void drawLine(int P[][2], int color)
+{
+    setcolor(color);
+    line(P[0][0], P[0][1], P[1][0], P[1][1]);
+}
+
+void translateLine(int P[][2], int T[])
+{
+    P[0][0] = P[0][0] + T[0];
+    P[0][1] = P[0][1] + T[1];
+
+    P[1][0] = P[1][0] + T[0];
+    P[1][1] = P[1][1] + T[1];
+}
+
+void main()
+{
+    int P[2][2] = {{100, 100}, {200, 200}};
+    int T[2] = {100, 10};
+    int gd = DETECT, gm;
+
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    setbkcolor(WHITE);
+
+    drawLine(P, BLUE);
+    translateLine(P, T);
+    drawLine(P, RED);
+
+    getch();
+    closegraph();
+}
+
+OUTPUT:
+The original line is blue and the translated line is red.
+Figure 13: (Blue) Original Line and (Red) Translated Line.
+
+
+============================================================</pre></section><section id="section-12"><h2>PRACTICAL XI – TRANSLATING A LINE CONSECUTIVELY THREE TIMES</h2><pre>PRACTICAL XI – TRANSLATING A LINE CONSECUTIVELY THREE TIMES
+============================================================
+
+#include &lt;graphics.h&gt;
+#include &lt;conio.h&gt;
+
+void drawLine(int P[][2], int color)
+{
+    setcolor(color);
+    line(P[0][0], P[0][1], P[1][0], P[1][1]);
+}
+
+void translateLine(int P[][2], int T[])
+{
+    P[0][0] = P[0][0] + T[0];
+    P[0][1] = P[0][1] + T[1];
+
+    P[1][0] = P[1][0] + T[0];
+    P[1][1] = P[1][1] + T[1];
+}
+
+void main()
+{
+    int P[2][2] = {{100, 100}, {200, 200}};
+
+    int T1[2] = {25, 0};
+    int T2[2] = {75, 0};
+    int T3[2] = {150, 0};
+
+    int gd = DETECT, gm;
+
+    initgraph(&amp;gd, &amp;gm, &quot;C://TURBOC3//bgi&quot;);
+
+    setbkcolor(WHITE);
+
+    drawLine(P, BLUE);
+
+    translateLine(P, T1);
+    drawLine(P, RED);
+
+    translateLine(P, T2);
+    drawLine(P, CYAN);
+
+    translateLine(P, T3);
+    drawLine(P, GREEN);
+
+    getch();
+    closegraph();
+}
+
+OUTPUT:
+The original line is blue. The consecutively translated lines are shown in red, cyan and green.
+Figure 14: (Blue) Original Line and Translated Lines in other colors.
+
+
+============================================================
+END OF TRANSCRIPTION – PDF PAGES 1–22
+============================================================
+
+IMPORTANT SOURCE NOTES:
+1. The original PDF uses the old Turbo C++ BGI graphics library and headers such as &lt;graphics.h&gt;, &lt;conio.h&gt;, &lt;dos.h&gt; and &lt;iostream.h&gt;.
+2. The programs are transcribed in that style; they are not guaranteed to compile unchanged in modern compilers.
+3. The scanned pages contain a few damaged or unclear code characters. In particular, some original loop conditions and variable declarations were difficult to read. Obvious syntax/OCR mistakes have been normalized for readability.
+4. Output descriptions are written in text because the PDF&#x27;s output figures are images.</pre></section>
+</main>
+</body>
+</html>
